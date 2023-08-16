@@ -1,19 +1,22 @@
-const express = require('express')
+const express = require("express");
 const {NotFound} = require("http-errors");
 const Joi = require("joi");
 
 const contactSchema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-    phone: Joi.number().unsafe(),
+  name: Joi.string().required(),
+  email: Joi.string().required(),
+  phone: Joi.string().required(),
 })
 
-const contactsOperations = require("../../model/contacts");
+const contactsOperations = require("../../models/contacts");
 
 const router = express.Router()
 
-router.get('/', async (req, res, next) => {
+router.get ("/", async(req, res)=> {
+  const result = await contactsOperations.listContacts();
+  res.json(result);
+})
+/*router.get('/', async (req, res, next) => {
   try {
   const products = await contactsOperations.listContacts();
   res.json({
@@ -25,14 +28,14 @@ router.get('/', async (req, res, next) => {
       }
   });
 } catch (error) {
-  next(error);
-  // res.status(500).json({
-  //     status: "error",
-  //     code: 500,
-  //     message: "Server error"
-  // })
+  /*next(error);*/
+   /*res.status(500).json({
+       status: "error",
+      code: 500,
+       message: "Server error"
+   })
 } 
-});
+});*/
 
 router.get('/:contactId', async (req, res, next) => {
   try {
@@ -133,4 +136,4 @@ router.put('/:contactId', async (req, res, next) => {
 }  
 });
 
-module.exports = router
+module.exports = router;
