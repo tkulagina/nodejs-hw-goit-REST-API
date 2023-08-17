@@ -1,5 +1,5 @@
 const express = require("express");
-const {NotFound} = require("http-errors");
+const {HttpError} = require ("../../helpers")
 const Joi = require("joi");
 
 const contactSchema = Joi.object({
@@ -12,11 +12,7 @@ const contactsOperations = require("../../models/contacts");
 
 const router = express.Router()
 
-router.get ("/", async(req, res)=> {
-  const result = await contactsOperations.listContacts();
-  res.json(result);
-})
-/*router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
   const products = await contactsOperations.listContacts();
   res.json({
@@ -28,31 +24,31 @@ router.get ("/", async(req, res)=> {
       }
   });
 } catch (error) {
-  /*next(error);*/
+  next(error);
    /*res.status(500).json({
        status: "error",
       code: 500,
        message: "Server error"
-   })
+   })*/
 } 
-});*/
+});
 
-router.get('/:contactId', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const {id} = req.params;
-    const result = await contactsOperations.getById(id);
+    const result = await contactsOperations.getContactById(id);
     if(!result){
-        throw new NotFound( `Contact with id=${id} not found`);
-        // throw createError(404, `Product with id=${id} not found`);
+        //throw new NotFound( `Contact with id=${id} not found`);
+        throw HttpError(404, `Contact with id=${id} not found`);
         // const error = new Error(`Product with id=${id} not found`);
         // error.status = 404;
         // throw error;
-        // res.status(404).json({
-        //     status: "error",
-        //     code: 404,
-        //     message: `Product with id=${id} not found`
-        // });
-        // return;
+        /*res.status(404).json({
+             status: "error",
+            code: 404,
+             message: `Product with id=${id} not found`
+         });
+         return;*/
     }
     res.json({
       message: 'template message',
@@ -63,7 +59,12 @@ router.get('/:contactId', async (req, res, next) => {
         }
     })
 } catch (error) {
-    next(error);
+   next(error);
+   /*res.status(500).json({
+    status: "error",
+   code: 500,
+    message: "Server error"
+})*/
 } 
 });
 
@@ -89,6 +90,7 @@ router.post('/', async (req, res, next) => {
 });
 
 router.delete('/:contactId', async (req, res, next) => {
+  
   try {
     const {id} = req.params;
     const result = await contactsOperations.removeById(id);
