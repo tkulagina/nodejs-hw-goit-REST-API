@@ -64,5 +64,17 @@
     "name": "Michael Sheen",
     "email": "good_omens2@egetlacus.ca",
     "phone": "(777) 888-9999"
+  },
+  {
+    "id": "5c1e72d5-027e-48ad-98f5-69b10aa7953c",
+    "name": "Crowly",
+    "email": "good_omens3@egetlacus.ca",
+    "phone": "(555) 888-9999"
+  },
+  {
+    "id": "2aa4de1c-5d67-43aa-9e7b-59b475d6a29a",
+    "name": "Azerafel",
+    "email": "good_omens2@egetlacus.ca",
+    "phone": "(333) 888-9999"
   }
 ]
