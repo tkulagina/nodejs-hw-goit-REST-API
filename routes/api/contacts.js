@@ -55,16 +55,21 @@ router.post('/', async (req, res, next) => {
 });
 
 router.put('/:id', async (req, res, next) => {
-  try {
+  try { 
+    if (Object.keys(req.body).length === 0) {
+      throw HttpError (404, "missing fields");
+    }
     const {error} = contactSchema.validate(req.body);
     if(error){        
         throw HttpError (400, error.message);
     }
+    
     const {id} = req.params;
     const result = await contactsOperations.updateContact(id, req.body);
     if(!result){
-        throw HttpError (404, "Missing fields");
+        throw HttpError (404, "missing fields");
     }
+      
     res.json(result)
 } catch (error) {
     next(error);
