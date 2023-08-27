@@ -108,13 +108,13 @@ const {
   deleteContact,
 } = require("../../controllers/contacts-controller");
 
-const { contactShema } = require("../../shemas");
+const { contactSchema } = require("../../schemas");
 const { validateBody } = require("../../decorators");
 
 router.get("/", getAllContacts);
 router.get("/:contactId", getContactId);
-router.post("/", validateBody(contactShema), postContact);
-router.put("/:contactId", validateBody(contactShema), putContact);
+router.post("/", validateBody(contactSchema), postContact);
+router.put("/:contactId", validateBody(contactSchema), putContact );
 router.delete("/:contactId", deleteContact);
 
 module.exports = router;

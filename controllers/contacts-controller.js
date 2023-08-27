@@ -8,7 +8,7 @@ const {
 
 const { HttpError } = require("../helpers");
 
-const { ctrlWrapper } = require("../decorators");
+const { cntrlWrapper } = require("../decorators");
 
 const getAllContacts = async (req, res) => {
   const result = await listContacts();
@@ -31,10 +31,6 @@ const postContact = async (req, res) => {
 
 const putContact = async (req, res) => {
 
-  if (Object.keys(req.body).length === 0) {
-    throw HttpError (404, "missing fields")
-  };
-
   const { contactId } = req.params;
   const result = await updateContact(contactId, req.body);
   if (!result) {
@@ -53,9 +49,9 @@ const deleteContact = async (req, res) => {
 };
 
 module.exports = {
-  getAllContacts: ctrlWrapper(getAllContacts),
-  getContactId: ctrlWrapper(getContactId),
-  postContact: ctrlWrapper(postContact),
-  putContact: ctrlWrapper(putContact),
-  deleteContact: ctrlWrapper(deleteContact),
+  getAllContacts: cntrlWrapper(getAllContacts),
+  getContactId: cntrlWrapper(getContactId),
+  postContact: cntrlWrapper(postContact),
+  putContact: cntrlWrapper(putContact),
+  deleteContact: cntrlWrapper(deleteContact),
 };
