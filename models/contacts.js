@@ -1,6 +1,5 @@
-const fs = require('fs/promises');
+const fs = require("fs/promises");
 const {v4} = require("uuid");
-
 const path = require("path");
 const contactsPath = path.join(__dirname, "contacts.json");
 
@@ -9,24 +8,10 @@ const listContacts = async () => {
   return JSON.parse(data);
 };
 
-const getContactById = async (id) => {
+const getContactById = async (contactId) => {
   const contacts = await listContacts();
-  const result = contacts.find((item) => item.id === id);
-  if (!result) {
-    return null;
-  }
-  return result;
-};
-
-const removeContact = async (contactId) => {
-  const contacts = await listContacts();
-  const index = contacts.findIndex((item) => item.id === contactId);
-  if (index === -1) {
-    return null;
-  }
-  const [result] = contacts.splice(index, 1);
-  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-  return result;
+  const result = contacts.find(({ id }) => id === contactId);
+  return result || null;
 };
 
 const addContact = async (body) => {
@@ -40,15 +25,29 @@ const addContact = async (body) => {
   return newContact;
 };
 
-const updateContact = async (id, body) => {
+const updateContact = async (contactId, body) => {
   const contacts = await listContacts();
-  const idx = contacts.findIndex(item => item.id === id);
-    if(idx === -1){
-        return null;
-    }
-    contacts[idx] = {id, ...body};
-    await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-    return contacts[idx];
+  const index = contacts.findIndex((item) => item.id === contactId);
+  if (index === -1) {
+    return null;
+  }
+  contacts[index] = {
+    id: contactId,
+    ...body,
+  };
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  return contacts[index];
+};
+
+const removeContact = async (contactId) => {
+  const contacts = await listContacts();
+  const index = contacts.findIndex(({ id }) => id === contactId);
+  if (index === -1) {
+    return null;
+  }
+  const [result] = contacts.splice(index, 1);
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  return result;
 };
 
 module.exports = {
@@ -57,4 +56,4 @@ module.exports = {
   removeContact,
   addContact,
   updateContact,
-}
+};

@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const {HttpError} = require ("../../helpers")
 
 const Joi = require("joi");
@@ -93,5 +93,28 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 
+
+module.exports = router;*/
+
+const express = require("express");
+
+const router = express.Router();
+
+const {
+  getAllContacts,
+  getContactId,
+  postContact,
+  putContact,
+  deleteContact,
+} = require("../../controllers/contacts-controller");
+
+const { contactShema } = require("../../shemas");
+const { validateBody } = require("../../decorators");
+
+router.get("/", getAllContacts);
+router.get("/:contactId", getContactId);
+router.post("/", validateBody(contactShema), postContact);
+router.put("/:contactId", validateBody(contactShema), putContact);
+router.delete("/:contactId", deleteContact);
 
 module.exports = router;
