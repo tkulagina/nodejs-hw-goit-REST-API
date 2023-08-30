@@ -14,9 +14,9 @@ const { contactSchema } = require("../../schemas");
 const { validateBody } = require("../../middleware");
 
 router.get("/", getAllContacts);
-router.get("/:contactId", getContactId);
-router.post("/", validateBody(contactSchema), postContact);
-router.put("/:contactId", validateBody(contactSchema), putContact );
-router.delete("/:contactId", deleteContact);
+//router.get("/:contactId", getContactId);
+//router.post("/", validateBody(contactSchema), postContact);
+//router.put("/:contactId", validateBody(contactSchema), putContact );
+//router.delete("/:contactId", deleteContact);
 
 module.exports = router;

@@ -15,7 +15,7 @@ const getAllContacts = async (req, res) => {
   res.json(result);
 };
 
-const getContactId = async (req, res) => {
+/*const getContactId = async (req, res) => {
   const { contactId } = req.params;
   const result = await getContactById(contactId);
   if (!result) {
@@ -46,12 +46,12 @@ const deleteContact = async (req, res) => {
     throw HttpError(404, "Not found");
   }
   res.json({ message: "Сontact deleted" });
-};
+};*/
 
 module.exports = {
   getAllContacts: cntrlWrapper(getAllContacts),
-  getContactId: cntrlWrapper(getContactId),
-  postContact: cntrlWrapper(postContact),
-  putContact: cntrlWrapper(putContact),
-  deleteContact: cntrlWrapper(deleteContact),
+  //getContactId: cntrlWrapper(getContactId),
+  //postContact: cntrlWrapper(postContact),
+  //putContact: cntrlWrapper(putContact),
+  //deleteContact: cntrlWrapper(deleteContact),
 };
