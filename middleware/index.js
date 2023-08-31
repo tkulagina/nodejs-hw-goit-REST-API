@@ -5,5 +5,5 @@ const isValidId = require ("./isValidId");
 module.exports = {
   cntrlWrapper,
   validateBody,
-  isValidId
+  isValidId, 
 };
