@@ -1,15 +1,15 @@
-const Contact = require ("../models/contact");
+const {Contact} = require ("../models/contact");
 
 const { HttpError } = require("../helpers");
 
 const { cntrlWrapper } = require("../middleware");
 
 const getAllContacts = async (req, res) => {
-  const result = await Contact.find();
+  const result = await Contact.find({}, "-createdAt -updatedAt");
   res.json(result);
 };
 
-const getContactId = async (req, res) => {
+const getContactById = async (req, res) => {
   const { contactId } = req.params;
   const result = await Contact.findById(contactId);
   if (!result) {
@@ -18,12 +18,12 @@ const getContactId = async (req, res) => {
   res.json(result);
 };
 
-const postContact = async (req, res) => {
+const addContact = async (req, res) => {
   const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
 
-const putContact = async (req, res) => {
+const updateContactById = async (req, res) => {
   const { contactId } = req.params;
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {new: true});
   if (!result) {
@@ -32,7 +32,7 @@ const putContact = async (req, res) => {
   res.status(201).json(result);
 };
 
-const patchContact = async (req, res) => {
+const updateStatusContact = async (req, res) => {
   const { contactId } = req.params;
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {new: true});
   if (!result) {
@@ -52,9 +52,9 @@ const deleteContact = async (req, res) => {
 
 module.exports = {
   getAllContacts: cntrlWrapper(getAllContacts),
-  getContactId: cntrlWrapper(getContactId),
-  postContact: cntrlWrapper(postContact),
-  putContact: cntrlWrapper(putContact),
-  patchContact: cntrlWrapper(patchContact),
+  getContactById: cntrlWrapper(getContactById),
+  addContact: cntrlWrapper(addContact),
+  updateContactById: cntrlWrapper(updateContactById),
+  updateStatusContact: cntrlWrapper(updateStatusContact),
   deleteContact: cntrlWrapper(deleteContact),
 };

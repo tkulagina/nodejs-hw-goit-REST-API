@@ -1,6 +1,7 @@
 const {Schema, model} = require ("mongoose");
-const {handleMongooseError} = require ("../helpers/handleMongooseError");
 const Joi = require("joi");
+
+const {handleMongooseError} = require ("../helpers");
 
 const contactSchema = new Schema ({
     name: {
@@ -38,7 +39,7 @@ const contactSchemaJoi = Joi.object({
 
 const updateFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required().messages({
-    "any.required": "missing required favorite field",
+    "any.required": "missing field favorite",
   }),
 })
 
