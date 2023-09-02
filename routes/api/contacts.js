@@ -12,13 +12,13 @@ const {
 } = require("../../controllers/contacts-controller");
 
 const { schemas } = require("../../models/contact");
-const { validateBody, isValidId } = require("../../middleware");
+const { validateBody, isValidId, ifFavoritePresent } = require("../../middleware");
 
 router.get("/", getAllContacts);
 router.get("/:contactId", isValidId, getContactById);
 router.post("/", validateBody(schemas.contactSchemaJoi), addContact);
 router.put("/:contactId", isValidId, validateBody(schemas.contactSchemaJoi), updateContactById );
-router.patch("/:contactId", isValidId, validateBody(schemas.updateFavoriteSchema), updateStatusContact );
+router.patch("/:contactId/favorite", isValidId, ifFavoritePresent(schemas.updateFavoriteSchema), updateStatusContact );
 router.delete("/:contactId", isValidId, deleteContact);
 
 module.exports = router;

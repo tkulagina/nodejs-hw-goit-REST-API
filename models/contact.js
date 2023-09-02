@@ -18,7 +18,7 @@ const contactSchema = new Schema ({
         type: Boolean,
         default: false,
       }
-}, {vertionKey: false, timestamps: true})
+}, {versionKey: false, timestamps: true})
 
 contactSchema.post ("save", handleMongooseError);
 
@@ -36,9 +36,7 @@ const contactSchemaJoi = Joi.object({
 })
 
 const updateFavoriteSchema = Joi.object({
-  favorite: Joi.boolean().required().messages({
-    "any.required": "missing field favorite",
-  }),
+  favorite: Joi.boolean().required() 
 })
 
 const schemas = {
