@@ -1,47 +1,49 @@
-const {
-  listContacts,
-  getContactById,
-  addContact,
-  updateContact,
-  removeContact,
-} = require("../models/contacts");
+const {Contact} = require ("../models/contact");
 
 const { HttpError } = require("../helpers");
 
 const { cntrlWrapper } = require("../middleware");
 
 const getAllContacts = async (req, res) => {
-  const result = await listContacts();
+  const result = await Contact.find({}, "-createdAt -updatedAt");
   res.json(result);
 };
 
-const getContactId = async (req, res) => {
+const getContactById = async (req, res) => {
   const { contactId } = req.params;
-  const result = await getContactById(contactId);
+  const result = await Contact.findById(contactId);
   if (!result) {
     throw HttpError(404, "Not found");
   }
   res.json(result);
 };
 
-const postContact = async (req, res) => {
-  const result = await addContact(req.body);
+const addContact = async (req, res) => {
+  const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
 
-const putContact = async (req, res) => {
-
+const updateContactById = async (req, res) => {
   const { contactId } = req.params;
-  const result = await updateContact(contactId, req.body);
+  const result = await Contact.findByIdAndUpdate(contactId, req.body, {new: true});
   if (!result) {
     throw HttpError(404, "Not found");
+  }
+  res.status(201).json(result);
+};
+
+const updateStatusContact = async (req, res) => {
+  const { contactId } = req.params;
+  const result = await Contact.findByIdAndUpdate(contactId, req.body, {new: true});
+  if (!result) {
+    throw HttpError(404, "missing field favorite");
   }
   res.status(201).json(result);
 };
 
 const deleteContact = async (req, res) => {
   const { contactId } = req.params;
-  const result = await removeContact(contactId);
+  const result = await Contact.findByIdAndRemove(contactId);
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -50,8 +52,9 @@ const deleteContact = async (req, res) => {
 
 module.exports = {
   getAllContacts: cntrlWrapper(getAllContacts),
-  getContactId: cntrlWrapper(getContactId),
-  postContact: cntrlWrapper(postContact),
-  putContact: cntrlWrapper(putContact),
+  getContactById: cntrlWrapper(getContactById),
+  addContact: cntrlWrapper(addContact),
+  updateContactById: cntrlWrapper(updateContactById),
+  updateStatusContact: cntrlWrapper(updateStatusContact),
   deleteContact: cntrlWrapper(deleteContact),
 };
