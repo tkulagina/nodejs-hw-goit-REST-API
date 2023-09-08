@@ -6,6 +6,9 @@ const {HttpError} = require ("../helpers");
 const {cntrlWrapper} = require ("../middleware");
 const {SECRET_KEY} = process.env;
 
+const dotenv = require ('dotenv');
+dotenv.config()
+
 const register = async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne ({email});
