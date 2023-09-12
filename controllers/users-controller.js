@@ -21,8 +21,7 @@ const register = async (req, res) => {
 
     const newUser = await User.create({...req.body, password: hashPassword});
 
-    res.status(201).json({ 
-        password: newUser.password,
+    res.status(201).json({        
         user: {
             email: newUser.email,
             subscription: "starter",
@@ -63,6 +62,7 @@ const getCurrent = async (req, res) => {
 
     res.json ({        
         email,
+        "subscription": "starter",
     })
 }
 
@@ -71,7 +71,7 @@ const logout = async (req, res) => {
     await User.findByIdAndUpdate (_id, {token: ""});
 
     res.json ({
-        message: "logout success"
+        
     })
 }
 

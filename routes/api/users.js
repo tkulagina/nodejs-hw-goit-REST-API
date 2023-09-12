@@ -1,5 +1,5 @@
 const express = require ("express");
-const cntrl = require ("../../controllers/auth-controller");
+const cntrl = require ("../../controllers/users-controller");
 
 const {validateBody, authenticate} = require ("../../middleware");
 const {schemas} = require ("../../models/user");
