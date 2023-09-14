@@ -1,6 +1,6 @@
 const {HttpError} = require ("../helpers");
 
-const ifFavoritePresent = (schema) => {
+const isFavoritePresent = (schema) => {
   const func = async (req, res, next) => {  
     
     const { error } = schema.validate(req.body);
@@ -11,4 +11,4 @@ const ifFavoritePresent = (schema) => {
   };
   return func;
 };
-module.exports = ifFavoritePresent;
+module.exports = isFavoritePresent;

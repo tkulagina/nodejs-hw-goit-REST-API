@@ -1,11 +1,13 @@
 const cntrlWrapper = require ("./cntrlWrapper");
 const validateBody = require ("./validateBody");
 const isValidId = require ("./isValidId");
-const ifFavoritePresent = require ("./iFavoritePresent")
+const isFavoritePresent = require ("./isFavoritePresent")
+const authenticate = require ("./authenticate")
 
 module.exports = {
   cntrlWrapper,
   validateBody,
   isValidId, 
-  ifFavoritePresent,
+  isFavoritePresent,
+  authenticate,
 };
