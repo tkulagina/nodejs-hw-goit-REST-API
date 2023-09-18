@@ -4,11 +4,11 @@ const dotenv = require ('dotenv');
 const gravatar = require ('gravatar');
 const path = require ('path');
 const fs = require ('fs/promises');
+const Jimp = require ('jimp');
 
 const {User} = require ("../models/user");
 const {HttpError} = require ("../helpers");
 const {cntrlWrapper} = require ("../middleware");
-const {resizeAvatar} = require ("../helpers");
 
 const avatarsDir = path.join (__dirname, "../", "public", "avatars");
 
@@ -83,15 +83,21 @@ const logout = async (req, res) => {
 const updateAvatar = async (req, res) => {
     const {_id} = req.user;
     const {path: tempUpload, originalname} = req.file;
-    resizeAvatar(tempUpload);
+    
     const filename = `${_id}_${originalname}`;
     try {
         const resultUpload = path.join (avatarsDir, filename);
         await fs.rename (tempUpload, resultUpload);
         const avatarURL = path.join ("avatars", filename);
+
+        Jimp.read(resultUpload, (error, image) => {
+            if (error) throw HttpError(404, "Avatar not found");
+            image.resize(250, 250).write(resultUpload);
+          });
+
         await User.findByIdAndUpdate (_id, {avatarURL});
          res.json ({
-        "avatarURL": "тут буде посилання на зображення",
+        "avatarURL": avatarURL,
     });
     } catch (error) { 
         await fs.unlink(tempUpload);
