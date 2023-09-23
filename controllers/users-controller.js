@@ -10,10 +10,8 @@ const { v4: uuidv4 } = require ('uuid');
 const {User} = require ("../models/user");
 const {HttpError, sendEmail} = require ("../helpers");
 const {cntrlWrapper} = require ("../middleware");
-const { verify } = require('crypto');
 
 const avatarsDir = path.join (__dirname, "../", "public", "avatars");
-
 
 dotenv.config()
 const {SECRET_KEY, BASE_URL} = process.env;
@@ -31,13 +29,13 @@ const register = async (req, res) => {
 
     const newUser = await User.create({...req.body, password: hashPassword, avatarURL, verificationToken});
 
-    const verifyEmail = {
+    const verificationEmail = {
         to: email,
         subject: "Verify email",
-        html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`
+        html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}">Click verify email</a>`
     };
 
-    await sendEmail(verifyEmail);
+    await sendEmail(verificationEmail);
 
     res.status(201).json({        
         user: {
@@ -72,13 +70,13 @@ const resendVerifyEmail = async (req, res) => {
         throw HttpError (400, "Verification has already been passed")
     }
 
-    const verifyEmail = {
+    const verificationEmail = {
         to: email,
         subject: "Verify email",
-        html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationToken}">Click verify email</a>`
+        html: `<a target="_blank" href="${BASE_URL}/users/verify/${user.verificationToken}">Click verify email</a>`
     };
 
-    await sendEmail(verifyEmail); 
+    await sendEmail(verificationEmail); 
 
     res.json ({
         "message": "Verification email sent"

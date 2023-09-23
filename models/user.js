@@ -69,7 +69,7 @@ const emailSchema = Joi.object({
 const schemas = {
     registerSchema,
     loginSchema,
-    emailSchema
+    emailSchema,
 }
 
 const User = model("user", userSchema);
